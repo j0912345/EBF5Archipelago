@@ -5,12 +5,15 @@ from BaseClasses import Item, ItemClassification
 
 class EBF5Item(Item):
     game: str = "Epic Battle Fantasy 5"
+
+# TODO: Add SID to all items, and use them instead of Names, maybe use a constant dict for Name to SIDs
+# TODO: Item Ids need to be completely reset.
  
 class EBF5ItemCategory(IntEnum): 
     KEY_ITEM        = 1
     KEY             = 2  # as in keys for blocks
-    QUEST           = 3
-    SHOP            = 4
+    QUEST           = 3  # quest rewards
+    SHOP            = 4  # appears in a shop
     SEASONAL        = 5
     EQUIPMENT       = 6
     SWORD           = 7
@@ -23,11 +26,12 @@ class EBF5ItemCategory(IntEnum):
     FEMALE_HATS     = 14
     FEMALE_ARMOR    = 15
     FLAIR           = 16
-    CONSUMABLE      = 17 # food ect.
-    BOOSTER         = 18
     CARD            = 19
     SKILL           = 20
     LIMIT_BREAK     = 21
+    CRAFTING        = 22
+    FOOD            = 23
+    BOOSTER         = 24
 
 class ItemData(NamedTuple):
     id: Optional[int]
@@ -35,46 +39,22 @@ class ItemData(NamedTuple):
     category: list[EBF5ItemCategory]
     classification: ItemClassification
     is_unique: bool = True
-    max_amount: int = 1
+    max_amount: int = 1 # 0 max_amount means no limit
 
-items = [
-    # Key Items
-    ItemData(5000, "Magnetic Boots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5001, "Leafy Boots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5002, "Spiked Boots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5003, "Thermal Boots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5004, "Winged Boots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5005, "The Shovel", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5006, "The Hammer", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5007, "The Axe", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5008, "The Stepladder", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5009, "The Raft", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5010, "The Candle", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5011, "The Big Hammer", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5012, "Stone Head", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression, False, 6),
-    ItemData(5013, "Topaz Key", [EBF5ItemCategory.KEY_ITEM, EBF5ItemCategory.KEY], ItemClassification.progression, False, 4),
-    ItemData(5014, "Coral Key", [EBF5ItemCategory.KEY_ITEM, EBF5ItemCategory.KEY], ItemClassification.progression, False, 6),
-    ItemData(5015, "Copper Key", [EBF5ItemCategory.KEY_ITEM, EBF5ItemCategory.KEY], ItemClassification.progression, False, 4),
-    ItemData(5016, "Gold Key", [EBF5ItemCategory.KEY_ITEM, EBF5ItemCategory.KEY], ItemClassification.progression, False, 6),
-    ItemData(5017, "Diamond Key", [EBF5ItemCategory.KEY_ITEM, EBF5ItemCategory.KEY], ItemClassification.progression, False, 4),
-    ItemData(5018, "Wooden Key", [EBF5ItemCategory.KEY_ITEM, EBF5ItemCategory.KEY], ItemClassification.progression, False, 5),
-    ItemData(5019, "Earth Orb", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5020, "Wind Orb", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5021, "Fire Orb", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5022, "Water Orb", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5023, "Emerald of Life", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5024, "Sapphire of Dreams", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    ItemData(5025, "Ruby of Death", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
-    # Progression
-    ItemData(None, "Post-Jotun", [], ItemClassification.progression),              #5026
-    ItemData(None, "Post-Neon Valkyrie", [], ItemClassification.progression),      #5027
-    ItemData(None, "Post-Laurelin", [], ItemClassification.progression),           #5028
-    ItemData(None, "Post-Poseidon", [], ItemClassification.progression),           #5029
-    ItemData(None, "Defeated Sol & Skadi", [], ItemClassification.progression),    #5030
-    ItemData(None, "Defeated Neon Valhalla", [], ItemClassification.progression),  #5031
-    ItemData(None, "Defeated Telperion", [], ItemClassification.progression),      #5032
-    ItemData(None, "Defeated Vulcan", [], ItemClassification.progression),         #5033
-    ItemData(None, "Defeated Crystal Hydra", [], ItemClassification.progression),  #5034
+progression = [
+    # Progression Checks, Probably wont be used?
+    ItemData(None, "Post-Jotun", [], ItemClassification.progression),
+    ItemData(None, "Post-Neon Valkyrie", [], ItemClassification.progression),
+    ItemData(None, "Post-Laurelin", [], ItemClassification.progression),
+    ItemData(None, "Post-Poseidon", [], ItemClassification.progression),
+    ItemData(None, "Defeated Sol & Skadi", [], ItemClassification.progression),
+    ItemData(None, "Defeated Neon Valhalla", [], ItemClassification.progression),
+    ItemData(None, "Defeated Telperion", [], ItemClassification.progression),
+    ItemData(None, "Defeated Vulcan", [], ItemClassification.progression),
+    ItemData(None, "Defeated Crystal Hydra", [], ItemClassification.progression),
+]
+
+equipment = [
     # Equipment
     ItemData(5035, "Heaven's Gate", [EBF5ItemCategory.EQUIPMENT, EBF5ItemCategory.SWORD], ItemClassification.useful),
     ItemData(5036, "Berzerker", [EBF5ItemCategory.EQUIPMENT, EBF5ItemCategory.SWORD], ItemClassification.useful),
@@ -305,7 +285,9 @@ items = [
     ItemData(5261, "Shield Medal", [EBF5ItemCategory.EQUIPMENT, EBF5ItemCategory.FLAIR], ItemClassification.useful),
     ItemData(5262, "Gold Star", [EBF5ItemCategory.EQUIPMENT, EBF5ItemCategory.FLAIR], ItemClassification.useful),
     ItemData(5263, "Platinum Star", [EBF5ItemCategory.EQUIPMENT, EBF5ItemCategory.FLAIR], ItemClassification.useful),
-    # Cards
+]
+
+cards = [
     ItemData(5264, "Card 01 (Baby Bush)", [EBF5ItemCategory.CARD], ItemClassification.useful),
     ItemData(5265, "Card 02 (Big Bush)", [EBF5ItemCategory.CARD], ItemClassification.useful),
     ItemData(5266, "Card 03 (Bazooka Bush)", [EBF5ItemCategory.CARD], ItemClassification.useful),
@@ -356,7 +338,9 @@ items = [
     ItemData(5311, "Card 48 (Baby Bacon)", [EBF5ItemCategory.CARD], ItemClassification.useful),
     ItemData(5312, "Card 49 (Bacon Roll)", [EBF5ItemCategory.CARD], ItemClassification.useful),
     ItemData(5313, "Card 50 (Adult Bacon)", [EBF5ItemCategory.CARD], ItemClassification.useful),
-    # Skills
+]
+
+skills = [
     ItemData(5314, "Ivy", [EBF5ItemCategory.SKILL], ItemClassification.useful),
     ItemData(5315, "Acid", [EBF5ItemCategory.SKILL], ItemClassification.useful),
     ItemData(5316, "Gale", [EBF5ItemCategory.SKILL], ItemClassification.useful),
@@ -401,12 +385,186 @@ items = [
     ItemData(5355, "Death Metal", [EBF5ItemCategory.LIMIT_BREAK], ItemClassification.useful),
     ItemData(5356, "Hidden Power", [EBF5ItemCategory.LIMIT_BREAK], ItemClassification.useful),
     ItemData(5357, "Art Attack", [EBF5ItemCategory.LIMIT_BREAK], ItemClassification.useful),
-    # Consumables / Other
-    ItemData(5358, "Espresso", [EBF5ItemCategory.CONSUMABLE], ItemClassification.filler, False, 4),
-    ItemData(5359, "Chili Pepper", [EBF5ItemCategory.CONSUMABLE], ItemClassification.filler, False, 4),
-    ItemData(5360, "Pizza", [EBF5ItemCategory.CONSUMABLE], ItemClassification.filler, False, 4),
-    ItemData(5361, "Physical Steroids Pack", [EBF5ItemCategory.CONSUMABLE], ItemClassification.filler, False, 5),
-    ItemData(5362, "Magical Steroids Pack", [EBF5ItemCategory.CONSUMABLE], ItemClassification.filler, False, 5),
-    ItemData(5363, "Accuracy/Evasion Steroids Pack", [EBF5ItemCategory.CONSUMABLE], ItemClassification.filler, False, 5),
-    ItemData(5364, "Health Steroids Pack", [EBF5ItemCategory.CONSUMABLE], ItemClassification.filler, False, 5)
+]
+
+crafting_items = [
+    ItemData(5358, "snowball", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5359, "wool", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5360, "brick", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5361, "turd", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5362, "seashell", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5363, "cactus", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5364, "iron", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5365, "shuriken", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5366, "feather", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5367, "flower", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5368, "spring", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5369, "wood", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5370, "bomb", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5371, "herb", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5372, "pipe", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5373, "tape", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5374, "geode", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5375, "root", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5376, "powder", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5377, "glass", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5378, "fur", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5379, "butterflywing", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5380, "gems", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5381, "ice", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5382, "water", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5383, "buckle", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5384, "steel", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5385, "magma", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5386, "floppy", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5387, "silk", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5388, "gear", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5389, "plastic", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5390, "amber", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5391, "leather", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5392, "virus", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5393, "claw", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5394, "rune2", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5395, "spike", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5396, "silver", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5397, "satin", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5398, "ruby", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5399, "topaz", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5400, "sapphire", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5401, "emerald", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5402, "gold", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5403, "rune", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5404, "cpu", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5405, "kevlar", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5406, "opal", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5407, "lego", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5408, "moonpearl", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5409, "scales", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5410, "gamechild", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5411, "titanium", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5412, "diamond", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5413, "darkmatter", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5414, "plutonium", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5415, "grail", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5416, "mythril", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+    ItemData(5417, "starfragment", [EBF5ItemCategory.CRAFTING], ItemClassification.filler),
+]
+
+food = [
+    ItemData(5418, "pumpkin", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5419, "pineapple", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5420, "watermelon", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5421, "dragonfruit", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5422, "raspberries", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5423, "blueberries", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5424, "cloudberries", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5425, "garlic", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5426, "banana", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5427, "pretzel", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5428, "apple", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5429, "cupcake", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5430, "beer", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5431, "cola", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5432, "bru", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5433, "energy", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5434, "coffee", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5435, "espresso", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5436, "chili", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5437, "orangejuice", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5438, "crisps", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5439, "chips", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5440, "burger", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+    ItemData(5441, "pizza", [EBF5ItemCategory.FOOD], ItemClassification.filler),
+]
+
+boosters = [
+    ItemData(5442, "bacon", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5443, "beef", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5444, "chicken", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5445, "egg", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5446, "poptart", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5447, "donut", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5448, "cake", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5449, "lollipop", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5450, "bread", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5451, "potato", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5452, "pill", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5453, "mushroom", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5454, "turnip", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5455, "grapes", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5456, "mint", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5457, "nut", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5458, "sushi", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5459, "riceball", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5460, "yoghurt", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+    ItemData(5461, "milk", [EBF5ItemCategory.BOOSTER], ItemClassification.filler),
+]
+
+key_items = [ # TODO Label Quest Items
+    ItemData(5462, "scouter", [EBF5ItemCategory.KEY_ITEM], ItemClassification.filler),                  # Starting Item TODO: Check if actually tied to logic
+    ItemData(5463, "oldboots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.filler),                 # Starting Item TODO: Check if actually tied to logic
+    ItemData(5464, "magneticboots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5465, "leafyboots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5466, "spikedboots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5467, "thermalboots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5468, "wingedboots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5469, "rubberboots", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),
+    ItemData(5470, "hammer", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5471, "bighammer", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5472, "axe", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5473, "shovel", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5474, "stepladder", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5475, "raft", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5476, "candle", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),               # Check if actually a progression item
+    ItemData(5477, "fishingrod", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),
+    ItemData(5478, "map", [EBF5ItemCategory.KEY_ITEM], ItemClassification.filler),                       # Starting Item TODO: Check if actually tied to logic
+    ItemData(5479, "map2", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),                      # Red Envelope
+    ItemData(5480, "woodenkey", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression, False, 5),
+    ItemData(5481, "coralkey", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression, False, 6),
+    ItemData(5482, "topazkey", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression, False, 4),
+    ItemData(5483, "copperkey", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression, False, 4),
+    ItemData(5484, "goldkey", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression, False, 6),
+    ItemData(5485, "diamondkey", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression, False, 4),
+    ItemData(5486, "flute", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),
+    ItemData(5487, "ocarina", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),
+    ItemData(5488, "starball", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 6),
+    ItemData(5489, "musicCD", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 6),
+    ItemData(5490, "stick", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 6),
+    # ItemData(5491, "plank", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 0),        # NOT A CHECK, dropped by Enemy
+    ItemData(5492, "panties", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 4),
+    ItemData(5493, "stonehead", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression, False, 6), # prog AND quest item
+    ItemData(5494, "earthenware", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 5),
+    ItemData(5495, "newspaper", [EBF5ItemCategory.KEY_ITEM], ItemClassification.filler),
+    ItemData(5496, "magazine", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),
+    ItemData(5497, "mail", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),
+    ItemData(5498, "popcorn", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 9),
+    ItemData(5499, "keycard", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 12),       # Golden Ticket 
+    # ItemData(5500, "keycard2", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 0),     # Green Keycard, NOT A CHECK, dropped by Enemy
+    ItemData(5501, "emptybottle", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 4),
+    ItemData(5502, "milkbottle", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 5),
+    ItemData(5503, "lavabottle", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 5),
+    ItemData(5504, "waterbottle", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 4),
+    ItemData(5505, "darkbottle", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 4),
+    ItemData(5506, "holybottle", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 4),
+    ItemData(5507, "sunglasses", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 2),
+    ItemData(5508, "glasses", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),
+    ItemData(5509, "sock1", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 4),
+    ItemData(5510, "sock2", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 4),
+    ItemData(5511, "headband", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 5),
+    # ItemData(5512, "battery", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 0),      # NOT A CHECK, dropped by Enemy
+    ItemData(5513, "poop", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 4),
+    ItemData(5514, "cookie", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 9),
+    ItemData(5515, "chocolate", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful, False, 5),
+    ItemData(5516, "earthorb", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5517, "windorb", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5518, "fireorb", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5519, "waterorb", [EBF5ItemCategory.KEY_ITEM], ItemClassification.progression),
+    ItemData(5520, "greenjewel", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),
+    ItemData(5521, "bluejewel", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),
+    ItemData(5522, "redjewel", [EBF5ItemCategory.KEY_ITEM], ItemClassification.useful),
+    # Seasonal items
+    # ItemData(5523, "halloweencandy", [EBF5ItemCategory.KEY_ITEM, EBF5ItemCategory.SEASONAL], ItemClassification.useful),  # NOT A CHECK, dropped by Enemy
+    # ItemData(5524, "candycane", [EBF5ItemCategory.KEY_ITEM, EBF5ItemCategory.SEASONAL], ItemClassification.useful),       # NOT A CHECK, dropped by Enemy
+    # ItemData(5525, "valentine", [EBF5ItemCategory.KEY_ITEM, EBF5ItemCategory.SEASONAL], ItemClassification.useful),       # NOT A CHECK, dropped by Enemy
+    # ItemData(5526, "easteregg", [EBF5ItemCategory.KEY_ITEM, EBF5ItemCategory.SEASONAL], ItemClassification.useful),       # NOT A CHECK, dropped by Enemy
 ]
